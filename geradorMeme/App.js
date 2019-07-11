@@ -1,97 +1,115 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
 
-import React, {Fragment} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import React, {Component} from 'react';
+import { View, Text, TextInput, Image, StyleSheet } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+export default class App extends Component{
 
-const App = () => {
-  return (
-    <Fragment>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </Fragment>
-  );
-};
+  constructor(props){
+    super(props);
+    this.state = { texto1: '', texto2: ''};
+  }
+
+  alteraVogais = (texto) => {
+    let novoTexto = texto.toLowerCase();
+    novoTexto = novoTexto.replace(/(a|e|i|o|u)/g,'i');
+    novoTexto = novoTexto.replace(/(á|à|ã|â)/g,'i');
+    novoTexto = novoTexto.replace(/(é|è|ê)/g,'i');
+    novoTexto = novoTexto.replace(/(í|ì|î)/g,'i');
+    novoTexto = novoTexto.replace(/(ó|ò|ô)/g,'i');
+    novoTexto = novoTexto.replace(/(ú|ù|û)/g,'i');
+    return novoTexto;
+  }
+
+  escrever = (t) =>{
+    this.setState({
+      texto1: t,
+      texto2: this.alteraVogais(t)
+    })
+  }
+
+  render(){
+    return(
+      <View style={ styles.body }>
+        <View>
+          <Text style={ styles.titulo }>Criador de Mimimi</Text>
+        </View>
+        
+        <View style={ styles.inputArea}>
+          <TextInput 
+            placeholder="Digite seu mimimi..."
+            style={styles.input} 
+            onChangeText={this.escrever}></TextInput>
+        </View>
+        
+        <View style={styles.area}>
+          <Text style={ [styles.texto, styles.texto1] }>
+            { this.state.texto1.toUpperCase() }
+          </Text>
+
+          <Image 
+            source={require('./src/imagens/mimimi.jpg')} 
+            style={ styles.imagem}></Image>
+
+          <Text style={ [styles.texto, styles.texto2] }>
+            { this.state.texto2.toUpperCase() }
+          </Text>
+        </View>
+      </View>
+    );
+  }
+}
+
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
   body: {
-    backgroundColor: Colors.white,
+    paddingTop:30,
+    flex:1,
+    backgroundColor:'#bbb',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  titulo: { 
+    fontSize:30,
+    color:'#fff',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
+  inputArea:{
+    alignSelf: "stretch",
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
+  input:{
+    height:40,
+    fontSize:20,
+    padding:10,
+    margin:20,
+    borderWidth: 1,
+    borderColor:'#999999',
+    borderRadius:15,
+    backgroundColor:"#eeeeee"
   },
-  highlight: {
-    fontWeight: '700',
+  area:{
+    width:300,
+    height:300,
+    marginTop:10
   },
+  imagem:{
+    marginTop:-70,
+    width:300,
+    height:300,
+    zIndex:0
+  },
+  texto:{
+    fontSize:20,
+    color: '#fff',
+    padding:10,
+    backgroundColor: 'transparent',
+    fontWeight:"bold",
+    textAlign: 'center',
+    height:70
+  },
+  texto1:{
+    zIndex:1
+  },
+  texto2:{
+    marginTop:-70,
+    zIndex:1
+  }
 });
-
-export default App;
